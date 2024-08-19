@@ -1,4 +1,5 @@
 # gmlewis/base64
+[![check](https://github.com/gmlewis/moonbit-base64/actions/workflows/check.yml/badge.svg)](https://github.com/gmlewis/moonbit-base64/actions/workflows/check.yml)
 
 This is a simple base64 encoder based on Go's implementation:
 https://cs.opensource.google/go/go/+/master:src/encoding/base64/base64.go
