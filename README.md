@@ -13,3 +13,17 @@ which has the copyright notice:
 
 The UTF-16 / UTF-8 encoder/decoders are provided with permission by
 @peter-jerry-ye from this repo: https://github.com/peter-jerry-ye/jstream
+
+## Status
+
+The code has been updated to support compiler:
+
+```bash
+$ moon version --all
+moon 0.1.20240830 (a5d1352 2024-08-30) ~/.moon/bin/moon
+moonc v0.1.20240830+ed79b6475 ~/.moon/bin/moonc
+moonrun 0.1.20240830 (a5d1352 2024-08-30) ~/.moon/bin/moonrun
+```
+
+Use `moonup` to manage `moon` compiler versions:
+https://github.com/chawyehsu/moonup
