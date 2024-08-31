@@ -5,6 +5,8 @@
 /// Use of this source code is governed by a BSD-style
 /// license that can be found in the LICENSE file.
 
+pub type! CorruptInputError String derive(Show)
+
 /// `std_decode2bytes` base64-decodes the provided bytes using Standard encoding.
 pub fn std_decode2bytes(src : String) -> Bytes!CorruptInputError {
   if src.length() == 0 {
@@ -12,8 +14,8 @@ pub fn std_decode2bytes(src : String) -> Bytes!CorruptInputError {
   }
   let buf = FixedArray::make(decoded_len(src.length()), b'\x00')
   let src = FixedArray::from_iter(str2bytes(src).iter())
-  decode_buf!(std_encoding, buf, src)
-  Bytes::from_iter(buf.iter())
+  let n = decode_buf!(std_decode_map, buf, src)
+  Bytes::from_iter(buf.iter().take(n))
 }
 
 /// `std_decode2str` base64-decodes the provided bytes using Standard encoding and returns a String.
@@ -28,16 +30,14 @@ pub fn url_decode2bytes(src : String) -> Bytes!CorruptInputError {
   }
   let buf = FixedArray::make(decoded_len(src.length()), b'\x00')
   let src = FixedArray::from_iter(str2bytes(src).iter())
-  decode_buf!(url_encoding, buf, src)
-  Bytes::from_iter(buf.iter())
+  let n = decode_buf!(url_decode_map, buf, src)
+  Bytes::from_iter(buf.iter().take(n))
 }
 
 /// `url_decode2str` base64-decodes the provided bytes using URL encoding and returns a String.
 pub fn url_decode2str(src : String) -> String!CorruptInputError {
   bytes2str(url_decode2bytes!(src))
 }
-
-type! CorruptInputError String derive(Show)
 
 fn decode_quantum(
   decode_map : FixedArray[Byte],
@@ -134,9 +134,9 @@ fn decode_buf(
   decode_map : FixedArray[Byte],
   dst : FixedArray[Byte],
   src : FixedArray[Byte]
-) -> Unit!CorruptInputError {
+) -> Int!CorruptInputError {
   if src.length() == 0 {
-    return ()
+    return 0
   }
   let mut si = 0
   let mut n = 0
@@ -164,6 +164,8 @@ fn decode_buf(
     let ninc = pair.1
     n += ninc
   }
+
+  n
 }
 
 fn be_put_uint32(b : FixedArray[Byte], offset : Int, value : UInt) -> Unit {
