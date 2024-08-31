@@ -6,35 +6,35 @@
 /// license that can be found in the LICENSE file.
 
 /// `std_decode2bytes` base64-decodes the provided bytes using Standard encoding.
-pub fn std_decode2bytes(src : String) -> Bytes {
+pub fn std_decode2bytes(src : String) -> Bytes!CorruptInputError {
   if src.length() == 0 {
     return Bytes::from_array([])
   }
   let buf = FixedArray::make(decoded_len(src.length()), b'\x00')
-  let src = str2bytes(src)
-  decode_buf(std_encoding, buf, src)
+  let src = FixedArray::from_iter(str2bytes(src).iter())
+  decode_buf!(std_encoding, buf, src)
   Bytes::from_iter(buf.iter())
 }
 
 /// `std_decode2str` base64-decodes the provided bytes using Standard encoding and returns a String.
-pub fn std_decode2str(src : String) -> String {
-  bytes2str(std_decode2bytes(src))
+pub fn std_decode2str(src : String) -> String!CorruptInputError {
+  bytes2str(std_decode2bytes!(src))
 }
 
 /// `url_decode2bytes` base64-decodes the provided bytes using URL encoding.
-pub fn url_decode2bytes(src : String) -> Bytes {
+pub fn url_decode2bytes(src : String) -> Bytes!CorruptInputError {
   if src.length() == 0 {
     return Bytes::from_array([])
   }
   let buf = FixedArray::make(decoded_len(src.length()), b'\x00')
-  let src = str2bytes(src)
-  decode_buf(url_encoding, buf, src)
+  let src = FixedArray::from_iter(str2bytes(src).iter())
+  decode_buf!(url_encoding, buf, src)
   Bytes::from_iter(buf.iter())
 }
 
 /// `url_decode2str` base64-decodes the provided bytes using URL encoding and returns a String.
-pub fn url_decode2str(src : String) -> String {
-  bytes2str(url_decode2bytes(src))
+pub fn url_decode2str(src : String) -> String!CorruptInputError {
+  bytes2str(url_decode2bytes!(src))
 }
 
 type! CorruptInputError String derive(Show)
@@ -42,6 +42,7 @@ type! CorruptInputError String derive(Show)
 fn decode_quantum(
   decode_map : FixedArray[Byte],
   dst : FixedArray[Byte],
+  dst_offset : Int,
   src : FixedArray[Byte],
   si : Int
 ) -> (Int, Int)!CorruptInputError {
@@ -116,15 +117,15 @@ fn decode_quantum(
   dbuf[1] = (val >> 8).to_byte()
   dbuf[0] = (val >> 16).to_byte()
   if dlen == 4 {
-    dst[2] = dbuf[2]
+    dst[dst_offset + 2] = dbuf[2]
     dbuf[2] = b'\x00'
   }
   if dlen >= 3 {
-    dst[1] = dbuf[1]
+    dst[dst_offset + 1] = dbuf[1]
     dbuf[1] = b'\x00'
   }
   if dlen >= 2 {
-    dst[0] = dbuf[0]
+    dst[dst_offset + 0] = dbuf[0]
   }
   return (si, dlen - 1)
 }
@@ -132,9 +133,61 @@ fn decode_quantum(
 fn decode_buf(
   decode_map : FixedArray[Byte],
   dst : FixedArray[Byte],
-  src : Bytes
+  src : FixedArray[Byte]
 ) -> Unit!CorruptInputError {
+  if src.length() == 0 {
+    return ()
+  }
+  let mut si = 0
+  let mut n = 0
+  for ; src.length() - si >= 4 && dst.length() - n >= 4; {
+    let (dn, ok) = assemble32(
+      decode_map[src[si + 0].to_int()],
+      decode_map[src[si + 1].to_int()],
+      decode_map[src[si + 2].to_int()],
+      decode_map[src[si + 3].to_int()],
+    )
+    if ok {
+      be_put_uint32(dst, n, dn)
+      n += 3
+      si += 4
+    } else {
+      let pair = decode_quantum!(decode_map, dst, n, src, si)
+      si = pair.0
+      let ninc = pair.1
+      n += ninc
+    }
+  }
+  for ; si < src.length(); {
+    let pair = decode_quantum!(decode_map, dst, n, src, si)
+    si = pair.0
+    let ninc = pair.1
+    n += ninc
+  }
+}
 
+fn be_put_uint32(b : FixedArray[Byte], offset : Int, value : UInt) -> Unit {
+  b[offset + 3] = (value & 0xff).to_byte()
+  b[offset + 2] = (value.lsr(8) & 0xff).to_byte()
+  b[offset + 1] = (value.lsr(16) & 0xff).to_byte()
+  b[offset] = (value.lsr(24) & 0xff).to_byte()
+}
+
+// assemble32 assembles 4 base64 digits into 3 bytes.
+// Each digit comes from the decode map, and will be 0xff
+// if it came from an invalid character.
+fn assemble32(n1 : Byte, n2 : Byte, n3 : Byte, n4 : Byte) -> (UInt, Bool) {
+  // Check that all the digits are valid. If any of them was 0xff, their
+  // bitwise OR will be 0xff.
+  if n1.lor(n2.lor(n3.lor(n4))) == b'\xff' {
+    return (0, false)
+  }
+  (
+    (n1.to_uint() << 26).lor(
+      (n2.to_uint() << 20).lor((n3.to_uint() << 14).lor(n4.to_uint() << 8)),
+    ),
+    true,
+  )
 }
 
 fn decoded_len(n : Int) -> Int {
