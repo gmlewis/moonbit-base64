@@ -8,35 +8,47 @@
 pub type! CorruptInputError String derive(Show)
 
 /// `std_decode2bytes` base64-decodes the provided bytes using Standard encoding.
-pub fn std_decode2bytes(src : String) -> Bytes!CorruptInputError {
+pub fn std_decode2bytes(
+  src : String,
+  ~no_padding : Bool = false
+) -> Bytes!CorruptInputError {
   if src.length() == 0 {
     return Bytes::from_array([])
   }
-  let buf = FixedArray::make(decoded_len(src.length()), b'\x00')
+  let buf = FixedArray::make(decoded_len(src.length(), no_padding), b'\x00')
   let src = FixedArray::from_iter(str2bytes(src).iter())
-  let n = decode_buf!(std_decode_map, buf, src)
+  let n = decode_buf!(std_decode_map, buf, src, no_padding)
   Bytes::from_iter(buf.iter().take(n))
 }
 
 /// `std_decode2str` base64-decodes the provided bytes using Standard encoding and returns a String.
-pub fn std_decode2str(src : String) -> String!CorruptInputError {
-  bytes2str(std_decode2bytes!(src))
+pub fn std_decode2str(
+  src : String,
+  ~no_padding : Bool = false
+) -> String!CorruptInputError {
+  bytes2str(std_decode2bytes!(src, ~no_padding))
 }
 
 /// `url_decode2bytes` base64-decodes the provided bytes using URL encoding.
-pub fn url_decode2bytes(src : String) -> Bytes!CorruptInputError {
+pub fn url_decode2bytes(
+  src : String,
+  ~no_padding : Bool = false
+) -> Bytes!CorruptInputError {
   if src.length() == 0 {
     return Bytes::from_array([])
   }
-  let buf = FixedArray::make(decoded_len(src.length()), b'\x00')
+  let buf = FixedArray::make(decoded_len(src.length(), no_padding), b'\x00')
   let src = FixedArray::from_iter(str2bytes(src).iter())
-  let n = decode_buf!(url_decode_map, buf, src)
+  let n = decode_buf!(url_decode_map, buf, src, no_padding)
   Bytes::from_iter(buf.iter().take(n))
 }
 
 /// `url_decode2str` base64-decodes the provided bytes using URL encoding and returns a String.
-pub fn url_decode2str(src : String) -> String!CorruptInputError {
-  bytes2str(url_decode2bytes!(src))
+pub fn url_decode2str(
+  src : String,
+  ~no_padding : Bool = false
+) -> String!CorruptInputError {
+  bytes2str(url_decode2bytes!(src, ~no_padding))
 }
 
 fn decode_quantum(
@@ -44,7 +56,9 @@ fn decode_quantum(
   dst : FixedArray[Byte],
   dst_offset : Int,
   src : FixedArray[Byte],
-  si : Int
+  si : Int,
+  decode_pad_char : Byte,
+  no_padding : Bool
 ) -> (Int, Int)!CorruptInputError {
   let dbuf : FixedArray[Byte] = FixedArray::make(4, b'\x00')
   let mut dlen = 4
@@ -54,8 +68,12 @@ fn decode_quantum(
       if j == 0 {
         return (si, 0)
       }
-      let pos = si - j
-      raise CorruptInputError("illegal base64 data at input byte \{pos}")
+      if j == 1 || not(no_padding) {
+        let pos = si - j
+        raise CorruptInputError("illegal base64 data at input byte \{pos}")
+      }
+      dlen = j
+      break
     }
     let in_byte = src[si]
     si += 1
@@ -67,7 +85,7 @@ fn decode_quantum(
     if in_byte == b'\x0a' || in_byte == b'\x0d' {
       continue j - 1
     }
-    if in_byte != pad_char {
+    if in_byte != decode_pad_char {
       let pos = si - 1
       raise CorruptInputError("expected pad characted at input byte \{pos}")
     }
@@ -88,7 +106,7 @@ fn decode_quantum(
         let pos = src.length()
         raise CorruptInputError("not enough padding at \{pos}")
       }
-      if src[si] != pad_char {
+      if src[si] != decode_pad_char {
         // incorrect padding
         let pos = si - 1
         raise CorruptInputError("incorrect padding at \{pos}")
@@ -133,11 +151,14 @@ fn decode_quantum(
 fn decode_buf(
   decode_map : FixedArray[Byte],
   dst : FixedArray[Byte],
-  src : FixedArray[Byte]
+  src : FixedArray[Byte],
+  no_padding : Bool
 ) -> Int!CorruptInputError {
   if src.length() == 0 {
     return 0
   }
+  let decode_pad_char = if no_padding { b'\xff' } else { pad_char }
+  //
   let mut si = 0
   let mut n = 0
   for ; src.length() - si >= 4 && dst.length() - n >= 4; {
@@ -152,14 +173,18 @@ fn decode_buf(
       n += 3
       si += 4
     } else {
-      let pair = decode_quantum!(decode_map, dst, n, src, si)
+      let pair = decode_quantum!(
+        decode_map, dst, n, src, si, decode_pad_char, no_padding,
+      )
       si = pair.0
       let ninc = pair.1
       n += ninc
     }
   }
   for ; si < src.length(); {
-    let pair = decode_quantum!(decode_map, dst, n, src, si)
+    let pair = decode_quantum!(
+      decode_map, dst, n, src, si, decode_pad_char, no_padding,
+    )
     si = pair.0
     let ninc = pair.1
     n += ninc
@@ -191,7 +216,10 @@ fn assemble32(n1 : Byte, n2 : Byte, n3 : Byte, n4 : Byte) -> (UInt, Bool) {
   )
 }
 
-fn decoded_len(n : Int) -> Int {
+fn decoded_len(n : Int, no_padding : Bool) -> Int {
+  if no_padding {
+    return n / 4 * 3 + n % 4 * 6 / 8
+  }
   n / 4 * 3
 }
 
