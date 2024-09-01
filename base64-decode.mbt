@@ -164,7 +164,6 @@ fn decode_buf(
     let ninc = pair.1
     n += ninc
   }
-
   n
 }
 
