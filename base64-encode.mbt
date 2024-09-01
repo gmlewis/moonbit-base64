@@ -95,6 +95,4 @@ let url_encoding : FixedArray[Byte] = FixedArray::from_array(
   .map(fn(c) { c.to_int().to_byte() }),
 )
 
-// let decode_map : FixedArray[Byte] = FixedArray::make(256, b'\xff')
-
 let pad_char = b'='
