@@ -8,6 +8,7 @@
 pub type! CorruptInputError String derive(Show)
 
 /// `std_decode2bytes` base64-decodes the provided bytes using Standard encoding.
+/// Setting `no_padding=true` is used for raw decoding.
 pub fn std_decode2bytes(
   src : String,
   ~no_padding : Bool = false
@@ -22,6 +23,7 @@ pub fn std_decode2bytes(
 }
 
 /// `std_decode2str` base64-decodes the provided bytes using Standard encoding and returns a String.
+/// Setting `no_padding=true` is used for raw decoding.
 pub fn std_decode2str(
   src : String,
   ~no_padding : Bool = false
@@ -30,6 +32,7 @@ pub fn std_decode2str(
 }
 
 /// `url_decode2bytes` base64-decodes the provided bytes using URL encoding.
+/// Setting `no_padding=true` is used for raw decoding.
 pub fn url_decode2bytes(
   src : String,
   ~no_padding : Bool = false
@@ -44,6 +47,7 @@ pub fn url_decode2bytes(
 }
 
 /// `url_decode2str` base64-decodes the provided bytes using URL encoding and returns a String.
+/// Setting `no_padding=true` is used for raw decoding.
 pub fn url_decode2str(
   src : String,
   ~no_padding : Bool = false
