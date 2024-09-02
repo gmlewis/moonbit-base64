@@ -48,10 +48,10 @@ fn encode_buf(
     let val = (src[si + 0].to_uint() << 16) |
       (src[si + 1].to_uint() << 8) |
       src[si + 2].to_uint()
-    dst[di + 0] = encode[((val >> 18) & 0x3F).to_int()]
-    dst[di + 1] = encode[((val >> 12) & 0x3F).to_int()]
-    dst[di + 2] = encode[((val >> 6) & 0x3F).to_int()]
-    dst[di + 3] = encode[(val & 0x3F).to_int()]
+    dst[di + 0] = encode[((val >> 18) & 0x3F).reinterpret_as_int()]
+    dst[di + 1] = encode[((val >> 12) & 0x3F).reinterpret_as_int()]
+    dst[di + 2] = encode[((val >> 6) & 0x3F).reinterpret_as_int()]
+    dst[di + 3] = encode[(val & 0x3F).reinterpret_as_int()]
     si += 3
     di += 4
   }
@@ -64,11 +64,11 @@ fn encode_buf(
   if remain == 2 {
     val = val | (src[si + 1].to_uint() << 8)
   }
-  dst[di + 0] = encode[((val >> 18) & 0x3F).to_int()]
-  dst[di + 1] = encode[((val >> 12) & 0x3F).to_int()]
+  dst[di + 0] = encode[((val >> 18) & 0x3F).reinterpret_as_int()]
+  dst[di + 1] = encode[((val >> 12) & 0x3F).reinterpret_as_int()]
   match remain {
     2 => {
-      dst[di + 2] = encode[((val >> 6) & 0x3F).to_int()]
+      dst[di + 2] = encode[((val >> 6) & 0x3F).reinterpret_as_int()]
       dst[di + 3] = pad_char
     }
     1 => {
