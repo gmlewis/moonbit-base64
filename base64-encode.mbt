@@ -6,39 +6,56 @@
 /// license that can be found in the LICENSE file.
 
 /// `std_encode2bytes` base64-encodes the provided bytes using Standard encoding.
-pub fn std_encode2bytes(src : FixedArray[Byte]) -> Bytes {
+/// Setting `no_padding=true` is used for raw encoding.
+pub fn std_encode2bytes(
+  src : FixedArray[Byte],
+  ~no_padding : Bool = false
+) -> Bytes {
   if src.length() == 0 {
     return Bytes::from_array([])
   }
-  let buf = FixedArray::make(encoded_len(src.length()), b'\x00')
-  encode_buf(std_encoding, buf, src)
+  let buf = FixedArray::make(encoded_len(src.length(), no_padding), b'\x00')
+  encode_buf(std_encoding, buf, src, no_padding)
   Bytes::from_iter(buf.iter())
 }
 
 /// `std_encode2str` base64-encodes the provided bytes using Standard encoding and returns a String.
-pub fn std_encode2str(src : FixedArray[Byte]) -> String {
-  bytes2str(std_encode2bytes(src))
+/// Setting `no_padding=true` is used for raw encoding.
+pub fn std_encode2str(
+  src : FixedArray[Byte],
+  ~no_padding : Bool = false
+) -> String {
+  bytes2str(std_encode2bytes(src, ~no_padding))
 }
 
 /// `url_encode2bytes` base64-encodes the provided bytes using URL encoding.
-pub fn url_encode2bytes(src : FixedArray[Byte]) -> Bytes {
+/// Setting `no_padding=true` is used for raw encoding.
+pub fn url_encode2bytes(
+  src : FixedArray[Byte],
+  ~no_padding : Bool = false
+) -> Bytes {
   if src.length() == 0 {
     return Bytes::from_array([])
   }
-  let buf = FixedArray::make(encoded_len(src.length()), b'\x00')
-  encode_buf(url_encoding, buf, src)
+  let buf = FixedArray::make(encoded_len(src.length(), no_padding), b'\x00')
+  encode_buf(url_encoding, buf, src, no_padding)
   Bytes::from_iter(buf.iter())
 }
 
 /// `url_encode2str` base64-encodes the provided bytes using URL encoding and returns a String.
-pub fn url_encode2str(src : FixedArray[Byte]) -> String {
-  bytes2str(url_encode2bytes(src))
+/// Setting `no_padding=true` is used for raw encoding.
+pub fn url_encode2str(
+  src : FixedArray[Byte],
+  ~no_padding : Bool = false
+) -> String {
+  bytes2str(url_encode2bytes(src, ~no_padding))
 }
 
 fn encode_buf(
   encode : FixedArray[Byte],
   dst : FixedArray[Byte],
-  src : FixedArray[Byte]
+  src : FixedArray[Byte],
+  no_padding : Bool
 ) -> Unit {
   let mut di = 0
   let mut si = 0
@@ -69,18 +86,25 @@ fn encode_buf(
   match remain {
     2 => {
       dst[di + 2] = encode[((val >> 6) & 0x3F).reinterpret_as_int()]
-      dst[di + 3] = pad_char
+      if not(no_padding) {
+        dst[di + 3] = pad_char
+      }
     }
-    1 => {
-      dst[di + 2] = pad_char
-      dst[di + 3] = pad_char
-    }
+    1 =>
+      if not(no_padding) {
+        dst[di + 2] = pad_char
+        dst[di + 3] = pad_char
+      }
     _ => ()
   }
 }
 
-fn encoded_len(n : Int) -> Int {
-  (n + 2) / 3 * 4 // minimum # 4-char quanta, 3 bytes each
+fn encoded_len(n : Int, no_padding : Bool) -> Int {
+  if no_padding {
+    n / 3 * 4 + (n % 3 * 8 + 5) / 6 // minimum # chars at 6 bits per char
+  } else {
+    (n + 2) / 3 * 4 // minimum # 4-char quanta, 3 bytes each
+  }
 }
 
 let std_encoding : FixedArray[Byte] = FixedArray::from_array(

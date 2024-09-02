@@ -81,3 +81,89 @@ test "std_encode2str: empty input" {
   let input = FixedArray::from_array([])
   inspect!(@base64.std_encode2str(input), content="")
 }
+
+let pairs = [
+  // RFC 3548 examples
+  (b"\x14\xfb\x9c\x03\xd9\x7e", "FPucA9l+"),
+  (b"\x14\xfb\x9c\x03\xd9", "FPucA9k="),
+  (b"\x14\xfb\x9c\x03", "FPucAw=="),
+
+  // RFC 4648 examples
+  (b"", ""),
+  (b"f", "Zg=="),
+  (b"fo", "Zm8="),
+  (b"foo", "Zm9v"),
+  (b"foob", "Zm9vYg=="),
+  (b"fooba", "Zm9vYmE="),
+  (b"foobar", "Zm9vYmFy"),
+
+  // Wikipedia examples
+  (b"sure.", "c3VyZS4="),
+  (b"sure", "c3VyZQ=="),
+  (b"sur", "c3Vy"),
+  (b"su", "c3U="),
+  (b"leasure.", "bGVhc3VyZS4="),
+  (b"easure.", "ZWFzdXJlLg=="),
+  (b"asure.", "YXN1cmUu"),
+  (b"sure.", "c3VyZS4="),
+
+  // biggest
+  (
+    b"Twas brillig, and the slithy toves", "VHdhcyBicmlsbGlnLCBhbmQgdGhlIHNsaXRoeSB0b3Zlcw==",
+  ),
+]
+
+// Do nothing to a reference base64 string (leave in standard format)
+fn std_ref(ref : String) -> String {
+  ref
+}
+
+// Convert a reference string to URL-encoding
+fn url_ref(ref : String) -> String {
+  let ref = @string.replace_all(ref, old="+", new="-")
+  let ref = @string.replace_all(ref, old="/", new="_")
+  ref
+}
+
+// Convert a reference string to raw, unpadded format
+fn raw_ref(ref : String) -> String {
+  @string.trim_right(ref, "=")
+}
+
+// Both URL and unpadding conversions
+fn raw_url_ref(ref : String) -> String {
+  raw_ref(url_ref(ref))
+}
+
+fn std_encode2str(b : FixedArray[Byte]) -> String {
+  @base64.std_encode2str(b)
+}
+
+fn url_encode2str(b : FixedArray[Byte]) -> String {
+  @base64.url_encode2str(b)
+}
+
+fn raw_std_encode2str(b : FixedArray[Byte]) -> String {
+  @base64.std_encode2str(b, no_padding=true)
+}
+
+fn raw_url_encode2str(b : FixedArray[Byte]) -> String {
+  @base64.url_encode2str(b, no_padding=true)
+}
+
+test "pairs encode properly" {
+  for tt in pairs {
+    for
+      enc in [
+        (std_encode2str, std_ref),
+        (url_encode2str, url_ref),
+        (raw_std_encode2str, raw_ref),
+        (raw_url_encode2str, raw_url_ref),
+      ] {
+      let input = FixedArray::from_array(tt.0.to_array())
+      let got = (enc.0)(input)
+      let want = (enc.1)(tt.1)
+      assert_eq!(got, want)
+    }
+  }
+}
