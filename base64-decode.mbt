@@ -209,13 +209,12 @@ fn be_put_uint32(b : FixedArray[Byte], offset : Int, value : UInt) -> Unit {
 fn assemble32(n1 : Byte, n2 : Byte, n3 : Byte, n4 : Byte) -> (UInt, Bool) {
   // Check that all the digits are valid. If any of them was 0xff, their
   // bitwise OR will be 0xff.
-  if n1.lor(n2.lor(n3.lor(n4))) == b'\xff' {
+  if (n1 | (n2 | (n3 | n4))) == b'\xff' {
     return (0, false)
   }
   (
-    (n1.to_uint() << 26).lor(
-      (n2.to_uint() << 20).lor((n3.to_uint() << 14).lor(n4.to_uint() << 8)),
-    ),
+    (n1.to_uint() << 26) |
+    ((n2.to_uint() << 20) | ((n3.to_uint() << 14) | (n4.to_uint() << 8))),
     true,
   )
 }
