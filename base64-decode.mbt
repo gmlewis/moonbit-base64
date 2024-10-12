@@ -198,9 +198,9 @@ fn decode_buf(
 
 fn be_put_uint32(b : FixedArray[Byte], offset : Int, value : UInt) -> Unit {
   b[offset + 3] = (value & 0xff).to_byte()
-  b[offset + 2] = (value.lsr(8) & 0xff).to_byte()
-  b[offset + 1] = (value.lsr(16) & 0xff).to_byte()
-  b[offset] = (value.lsr(24) & 0xff).to_byte()
+  b[offset + 2] = ((value >> 8) & 0xff).to_byte()
+  b[offset + 1] = ((value >> 16) & 0xff).to_byte()
+  b[offset] = ((value >> 24) & 0xff).to_byte()
 }
 
 // assemble32 assembles 4 base64 digits into 3 bytes.
