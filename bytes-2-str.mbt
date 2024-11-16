@@ -5,7 +5,7 @@ pub fn bytes2str(b : Bytes) -> String {
   for ch in chars {
     buf.write_char(ch)
   }
-  buf.to_string()
+  buf.to_unchecked_string()
 }
 
 test "bytes2str works on simple case" {

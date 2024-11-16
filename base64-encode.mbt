@@ -9,7 +9,7 @@
 /// Setting `no_padding=true` is used for raw encoding.
 pub fn std_encode2bytes(
   src : FixedArray[Byte],
-  ~no_padding : Bool = false
+  no_padding~ : Bool = false
 ) -> Bytes {
   if src.length() == 0 {
     return Bytes::from_array([])
@@ -23,16 +23,16 @@ pub fn std_encode2bytes(
 /// Setting `no_padding=true` is used for raw encoding.
 pub fn std_encode2str(
   src : FixedArray[Byte],
-  ~no_padding : Bool = false
+  no_padding~ : Bool = false
 ) -> String {
-  bytes2str(std_encode2bytes(src, ~no_padding))
+  bytes2str(std_encode2bytes(src, no_padding~))
 }
 
 /// `url_encode2bytes` base64-encodes the provided bytes using URL encoding.
 /// Setting `no_padding=true` is used for raw encoding.
 pub fn url_encode2bytes(
   src : FixedArray[Byte],
-  ~no_padding : Bool = false
+  no_padding~ : Bool = false
 ) -> Bytes {
   if src.length() == 0 {
     return Bytes::from_array([])
@@ -46,9 +46,9 @@ pub fn url_encode2bytes(
 /// Setting `no_padding=true` is used for raw encoding.
 pub fn url_encode2str(
   src : FixedArray[Byte],
-  ~no_padding : Bool = false
+  no_padding~ : Bool = false
 ) -> String {
-  bytes2str(url_encode2bytes(src, ~no_padding))
+  bytes2str(url_encode2bytes(src, no_padding~))
 }
 
 fn encode_buf(

@@ -5,13 +5,13 @@
 /// Use of this source code is governed by a BSD-style
 /// license that can be found in the LICENSE file.
 
-pub type! CorruptInputError String derive(Show)
+pub(all) type! CorruptInputError String derive(Show)
 
 /// `std_decode2bytes` base64-decodes the provided bytes using Standard encoding.
 /// Setting `no_padding=true` is used for raw decoding.
 pub fn std_decode2bytes(
   src : String,
-  ~no_padding : Bool = false
+  no_padding~ : Bool = false
 ) -> Bytes!CorruptInputError {
   if src.length() == 0 {
     return Bytes::from_array([])
@@ -26,16 +26,16 @@ pub fn std_decode2bytes(
 /// Setting `no_padding=true` is used for raw decoding.
 pub fn std_decode2str(
   src : String,
-  ~no_padding : Bool = false
+  no_padding~ : Bool = false
 ) -> String!CorruptInputError {
-  bytes2str(std_decode2bytes!(src, ~no_padding))
+  bytes2str(std_decode2bytes!(src, no_padding~))
 }
 
 /// `url_decode2bytes` base64-decodes the provided bytes using URL encoding.
 /// Setting `no_padding=true` is used for raw decoding.
 pub fn url_decode2bytes(
   src : String,
-  ~no_padding : Bool = false
+  no_padding~ : Bool = false
 ) -> Bytes!CorruptInputError {
   if src.length() == 0 {
     return Bytes::from_array([])
@@ -50,9 +50,9 @@ pub fn url_decode2bytes(
 /// Setting `no_padding=true` is used for raw decoding.
 pub fn url_decode2str(
   src : String,
-  ~no_padding : Bool = false
+  no_padding~ : Bool = false
 ) -> String!CorruptInputError {
-  bytes2str(url_decode2bytes!(src, ~no_padding))
+  bytes2str(url_decode2bytes!(src, no_padding~))
 }
 
 fn decode_quantum(

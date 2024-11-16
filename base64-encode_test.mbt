@@ -114,25 +114,25 @@ let pairs = [
 ]
 
 // Do nothing to a reference base64 string (leave in standard format)
-fn std_ref(ref : String) -> String {
-  ref
+fn std_ref(s : String) -> String {
+  s
 }
 
 // Convert a reference string to URL-encoding
-fn url_ref(ref : String) -> String {
-  let ref = @string.replace_all(ref, old="+", new="-")
-  let ref = @string.replace_all(ref, old="/", new="_")
-  ref
+fn url_ref(s : String) -> String {
+  let s = @string.replace_all(s, old="+", new="-")
+  let s = @string.replace_all(s, old="/", new="_")
+  s
 }
 
 // Convert a reference string to raw, unpadded format
-fn raw_ref(ref : String) -> String {
-  @string.trim_end(ref, "=")
+fn raw_ref(s : String) -> String {
+  @string.trim_end(s, "=")
 }
 
 // Both URL and unpadding conversions
-fn raw_url_ref(ref : String) -> String {
-  raw_ref(url_ref(ref))
+fn raw_url_ref(s : String) -> String {
+  raw_ref(url_ref(s))
 }
 
 fn std_encode2str(b : FixedArray[Byte]) -> String {
