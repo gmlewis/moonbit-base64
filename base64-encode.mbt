@@ -5,7 +5,7 @@
 /// Use of this source code is governed by a BSD-style
 /// license that can be found in the LICENSE file.
 
-/// `std_encode2bytes` base64-encodes the provided bytes using Standard encoding.
+///| `std_encode2bytes` base64-encodes the provided bytes using Standard encoding.
 /// Setting `no_padding=true` is used for raw encoding.
 pub fn std_encode2bytes(
   src : FixedArray[Byte],
@@ -19,7 +19,7 @@ pub fn std_encode2bytes(
   Bytes::from_iter(buf.iter())
 }
 
-/// `std_encode2str` base64-encodes the provided bytes using Standard encoding and returns a String.
+///| `std_encode2str` base64-encodes the provided bytes using Standard encoding and returns a String.
 /// Setting `no_padding=true` is used for raw encoding.
 pub fn std_encode2str(
   src : FixedArray[Byte],
@@ -28,7 +28,7 @@ pub fn std_encode2str(
   bytes2str(std_encode2bytes(src, no_padding~))
 }
 
-/// `url_encode2bytes` base64-encodes the provided bytes using URL encoding.
+///| `url_encode2bytes` base64-encodes the provided bytes using URL encoding.
 /// Setting `no_padding=true` is used for raw encoding.
 pub fn url_encode2bytes(
   src : FixedArray[Byte],
@@ -42,7 +42,7 @@ pub fn url_encode2bytes(
   Bytes::from_iter(buf.iter())
 }
 
-/// `url_encode2str` base64-encodes the provided bytes using URL encoding and returns a String.
+///| `url_encode2str` base64-encodes the provided bytes using URL encoding and returns a String.
 /// Setting `no_padding=true` is used for raw encoding.
 pub fn url_encode2str(
   src : FixedArray[Byte],
@@ -51,6 +51,7 @@ pub fn url_encode2str(
   bytes2str(url_encode2bytes(src, no_padding~))
 }
 
+///|
 fn encode_buf(
   encode : FixedArray[Byte],
   dst : FixedArray[Byte],
@@ -99,6 +100,7 @@ fn encode_buf(
   }
 }
 
+///|
 fn encoded_len(n : Int, no_padding : Bool) -> Int {
   if no_padding {
     n / 3 * 4 + (n % 3 * 8 + 5) / 6 // minimum # chars at 6 bits per char
@@ -107,16 +109,19 @@ fn encoded_len(n : Int, no_padding : Bool) -> Int {
   }
 }
 
+///|
 let std_encoding : FixedArray[Byte] = FixedArray::from_array(
   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
   .to_array()
   .map(fn(c) { c.to_int().to_byte() }),
 )
 
+///|
 let url_encoding : FixedArray[Byte] = FixedArray::from_array(
   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_"
   .to_array()
   .map(fn(c) { c.to_int().to_byte() }),
 )
 
+///|
 let pad_char = b'='

@@ -1,13 +1,12 @@
-/// This package is based on the Go implementation found here:
+///| This package is based on the Go implementation found here:
 /// https://cs.opensource.google/go/go/+/master:src/encoding/base64/base64.go
 /// which has the copyright notice:
 /// Copyright 2009 The Go Authors. All rights reserved.
 /// Use of this source code is governed by a BSD-style
 /// license that can be found in the LICENSE file.
-
 pub(all) type! CorruptInputError String derive(Show)
 
-/// `std_decode2bytes` base64-decodes the provided bytes using Standard encoding.
+///| `std_decode2bytes` base64-decodes the provided bytes using Standard encoding.
 /// Setting `no_padding=true` is used for raw decoding.
 pub fn std_decode2bytes(
   src : String,
@@ -22,7 +21,7 @@ pub fn std_decode2bytes(
   Bytes::from_iter(buf.iter().take(n))
 }
 
-/// `std_decode2str` base64-decodes the provided bytes using Standard encoding and returns a String.
+///| `std_decode2str` base64-decodes the provided bytes using Standard encoding and returns a String.
 /// Setting `no_padding=true` is used for raw decoding.
 pub fn std_decode2str(
   src : String,
@@ -31,7 +30,7 @@ pub fn std_decode2str(
   bytes2str(std_decode2bytes!(src, no_padding~))
 }
 
-/// `url_decode2bytes` base64-decodes the provided bytes using URL encoding.
+///| `url_decode2bytes` base64-decodes the provided bytes using URL encoding.
 /// Setting `no_padding=true` is used for raw decoding.
 pub fn url_decode2bytes(
   src : String,
@@ -46,7 +45,7 @@ pub fn url_decode2bytes(
   Bytes::from_iter(buf.iter().take(n))
 }
 
-/// `url_decode2str` base64-decodes the provided bytes using URL encoding and returns a String.
+///| `url_decode2str` base64-decodes the provided bytes using URL encoding and returns a String.
 /// Setting `no_padding=true` is used for raw decoding.
 pub fn url_decode2str(
   src : String,
@@ -55,6 +54,7 @@ pub fn url_decode2str(
   bytes2str(url_decode2bytes!(src, no_padding~))
 }
 
+///|
 fn decode_quantum(
   decode_map : FixedArray[Byte],
   dst : FixedArray[Byte],
@@ -152,6 +152,7 @@ fn decode_quantum(
   return (si, dlen - 1)
 }
 
+///|
 fn decode_buf(
   decode_map : FixedArray[Byte],
   dst : FixedArray[Byte],
@@ -196,6 +197,7 @@ fn decode_buf(
   n
 }
 
+///|
 fn be_put_uint32(b : FixedArray[Byte], offset : Int, value : UInt) -> Unit {
   b[offset + 3] = (value & 0xff).to_byte()
   b[offset + 2] = ((value >> 8) & 0xff).to_byte()
@@ -206,6 +208,7 @@ fn be_put_uint32(b : FixedArray[Byte], offset : Int, value : UInt) -> Unit {
 // assemble32 assembles 4 base64 digits into 3 bytes.
 // Each digit comes from the decode map, and will be 0xff
 // if it came from an invalid character.
+///|
 fn assemble32(n1 : Byte, n2 : Byte, n3 : Byte, n4 : Byte) -> (UInt, Bool) {
   // Check that all the digits are valid. If any of them was 0xff, their
   // bitwise OR will be 0xff.
@@ -219,6 +222,7 @@ fn assemble32(n1 : Byte, n2 : Byte, n3 : Byte, n4 : Byte) -> (UInt, Bool) {
   )
 }
 
+///|
 fn decoded_len(n : Int, no_padding : Bool) -> Int {
   if no_padding {
     return n / 4 * 3 + n % 4 * 6 / 8
@@ -226,6 +230,7 @@ fn decoded_len(n : Int, no_padding : Bool) -> Int {
   n / 4 * 3
 }
 
+///|
 let std_decode_map : FixedArray[Byte] = [
   b'\xff', b'\xff', b'\xff', b'\xff', b'\xff', b'\xff', b'\xff', b'\xff', b'\xff',
   b'\xff', b'\xff', b'\xff', b'\xff', b'\xff', b'\xff', b'\xff', b'\xff', b'\xff',
@@ -258,6 +263,7 @@ let std_decode_map : FixedArray[Byte] = [
   b'\xff', b'\xff', b'\xff', b'\xff',
 ]
 
+///|
 let url_decode_map : FixedArray[Byte] = [
   b'\xff', b'\xff', b'\xff', b'\xff', b'\xff', b'\xff', b'\xff', b'\xff', b'\xff',
   b'\xff', b'\xff', b'\xff', b'\xff', b'\xff', b'\xff', b'\xff', b'\xff', b'\xff',

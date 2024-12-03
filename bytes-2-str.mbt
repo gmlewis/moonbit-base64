@@ -1,4 +1,4 @@
-/// `bytes2str` decodes a UTF-8 `Bytes` to a UTF-16 `String`.
+///| `bytes2str` decodes a UTF-8 `Bytes` to a UTF-16 `String`.
 pub fn bytes2str(b : Bytes) -> String {
   let chars = (b.iter() |> @decoder.utf8()).collect()
   let buf = @buffer.new(size_hint=chars.length())
