@@ -3,6 +3,7 @@ pub fn str2bytes(s : String) -> Bytes {
   s.iter() |> @encoder.utf8() |> Bytes::from_iter()
 }
 
+///|
 test "str2bytes works on simple case" {
   let got = str2bytes("simple case")
   inspect!(
@@ -19,6 +20,7 @@ pub fn str2array(s : String) -> Array[Byte] {
   s.iter() |> @encoder.utf8() |> Array::from_iter()
 }
 
+///|
 test "str2array works on simple case" {
   let got = str2array("simple case")
   inspect!(

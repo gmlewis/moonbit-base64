@@ -1,3 +1,4 @@
+///|
 test "url_encode2str: random input cases" {
   let input1 = FixedArray::from_array([b'x', b'y', b'z', b'1', b'2'])
   inspect!(@base64.url_encode2str(input1), content="eHl6MTI=")
@@ -17,26 +18,31 @@ test "url_encode2str: random input cases" {
   )
 }
 
+///|
 test "url_encode2str: three bytes input" {
   let input = FixedArray::from_array([b'A', b'B', b'C'])
   inspect!(@base64.url_encode2str(input), content="QUJD")
 }
 
+///|
 test "url_encode2str: two bytes input" {
   let input = FixedArray::from_array([b'A', b'B'])
   inspect!(@base64.url_encode2str(input), content="QUI=")
 }
 
+///|
 test "url_encode2str: single byte input" {
   let input = FixedArray::from_array([b'A'])
   inspect!(@base64.url_encode2str(input), content="QQ==")
 }
 
+///|
 test "url_encode2str: empty input" {
   let input = FixedArray::from_array([])
   inspect!(@base64.url_encode2str(input), content="")
 }
 
+///|
 test "std_encode2str: boundary case with max length" {
   let max_length = 1024 // Assuming a reasonable max length for base64 encoding
   let input = FixedArray::make(max_length, b'A')
@@ -45,6 +51,7 @@ test "std_encode2str: boundary case with max length" {
   inspect!(@base64.std_encode2str(input), content=expected_output)
 }
 
+///|
 test "std_encode2str: random input cases" {
   let input1 = FixedArray::from_array([b'1', b'2', b'3', b'4'])
   inspect!(@base64.std_encode2str(input1), content="MTIzNA==")
@@ -58,21 +65,25 @@ test "std_encode2str: random input cases" {
   inspect!(@base64.std_encode2str(input4), content="QUFBQUFBQUE=")
 }
 
+///|
 test "std_encode2str: three bytes input" {
   let input = FixedArray::from_array([b'A', b'B', b'C'])
   inspect!(@base64.std_encode2str(input), content="QUJD")
 }
 
+///|
 test "std_encode2str: two bytes input" {
   let input = FixedArray::from_array([b'A', b'B'])
   inspect!(@base64.std_encode2str(input), content="QUI=")
 }
 
+///|
 test "std_encode2str: single byte input" {
   let input = FixedArray::from_array([b'A'])
   inspect!(@base64.std_encode2str(input), content="QQ==")
 }
 
+///|
 test "std_encode2str: empty input" {
   let input = FixedArray::from_array([])
   inspect!(@base64.std_encode2str(input), content="")
@@ -156,6 +167,7 @@ fn raw_url_encode2str(b : FixedArray[Byte]) -> String {
   @base64.url_encode2str(b, no_padding=true)
 }
 
+///|
 test "pairs encode properly" {
   for tt in pairs {
     for

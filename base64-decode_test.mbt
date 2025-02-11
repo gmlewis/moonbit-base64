@@ -1,3 +1,4 @@
+///|
 test "url_decode2str: random input cases" {
   let input1 = "eHl6MTI="
   inspect!(@base64.url_decode2str!(input1), content="xyz12")
@@ -12,26 +13,31 @@ test "url_decode2str: random input cases" {
   )
 }
 
+///|
 test "url_decode2str: three bytes output" {
   let input = "QUJD"
   inspect!(@base64.url_decode2str!(input), content="ABC")
 }
 
+///|
 test "url_decode2str: two bytes output" {
   let input = "QUI="
   inspect!(@base64.url_decode2str!(input), content="AB")
 }
 
+///|
 test "url_decode2str: single byte output" {
   let input = "QQ=="
   inspect!(@base64.url_decode2str!(input), content="A")
 }
 
+///|
 test "url_decode2str: empty output" {
   let input = ""
   inspect!(@base64.url_decode2str!(input), content="")
 }
 
+///|
 test "std_decode2str: boundary case with max length" {
   let max_length = 1024 // Assuming a reasonable max length for base64 encoding
   let input =
@@ -41,6 +47,7 @@ test "std_decode2str: boundary case with max length" {
   assert_eq!(got, want)
 }
 
+///|
 test "std_decode2str: random input cases" {
   let input1 = "MTIzNA=="
   inspect!(@base64.std_decode2str!(input1), content="1234")
@@ -52,26 +59,31 @@ test "std_decode2str: random input cases" {
   inspect!(@base64.std_decode2str!(input4), content="AAAAAAAA")
 }
 
+///|
 test "std_decode2str: three bytes output" {
   let input = "QUJD"
   inspect!(@base64.std_decode2str!(input), content="ABC")
 }
 
+///|
 test "std_decode2str: two bytes output" {
   let input = "QUI="
   inspect!(@base64.std_decode2str!(input), content="AB")
 }
 
+///|
 test "std_decode2str: single byte output" {
   let input = "QQ=="
   inspect!(@base64.std_decode2str!(input), content="A")
 }
 
+///|
 test "std_decode2str: empty input" {
   let input = ""
   inspect!(@base64.std_decode2str!(input), content="")
 }
 
+///|
 test "std_decode2str with no_padding works" {
   let str =
     #|eyJ1c2VyX2hhbmRsZSI6InVzZXItMSIsImlzcyI6Imdlbi11c2VyLWp3dCIsInN1YiI6InVzZXJfY3JhMGF1N3JhY2swZGNrZjlkaGciLCJleHAiOjE3MjUxODU3OTEsIm5iZiI6MTcyNTE3MTM5MSwiaWF0IjoxNzI1MTcxMzkxfQ

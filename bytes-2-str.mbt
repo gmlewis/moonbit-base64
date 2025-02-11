@@ -8,6 +8,7 @@ pub fn bytes2str(b : Bytes) -> String {
   buf.contents().to_unchecked_string()
 }
 
+///|
 test "bytes2str works on simple case" {
   let got = bytes2str(b"simple case")
   inspect!(got, content="simple case")
@@ -25,6 +26,7 @@ pub fn array2str(b : ArrayView[Byte]) -> String {
   buf.contents().to_unchecked_string()
 }
 
+///|
 test "array2str works on simple case" {
   let inp = b"simple case".to_array()
   let got = array2str(inp[:])

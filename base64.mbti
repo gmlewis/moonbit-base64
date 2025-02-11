@@ -1,0 +1,35 @@
+package gmlewis/base64
+
+// Values
+fn array2str(ArrayView[Byte]) -> String
+
+fn bytes2str(Bytes) -> String
+
+fn std_decode2bytes(String, no_padding~ : Bool = ..) -> Bytes!CorruptInputError
+
+fn std_decode2str(String, no_padding~ : Bool = ..) -> String!CorruptInputError
+
+fn std_encode2bytes(FixedArray[Byte], no_padding~ : Bool = ..) -> Bytes
+
+fn std_encode2str(FixedArray[Byte], no_padding~ : Bool = ..) -> String
+
+fn str2array(String) -> Array[Byte]
+
+fn str2bytes(String) -> Bytes
+
+fn url_decode2bytes(String, no_padding~ : Bool = ..) -> Bytes!CorruptInputError
+
+fn url_decode2str(String, no_padding~ : Bool = ..) -> String!CorruptInputError
+
+fn url_encode2bytes(FixedArray[Byte], no_padding~ : Bool = ..) -> Bytes
+
+fn url_encode2str(FixedArray[Byte], no_padding~ : Bool = ..) -> String
+
+// Types and methods
+pub(all) type! CorruptInputError String
+impl Show for CorruptInputError
+
+// Type aliases
+
+// Traits
+
