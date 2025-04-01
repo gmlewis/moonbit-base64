@@ -1,4 +1,4 @@
-package gmlewis/base64
+package "gmlewis/base64"
 
 // Values
 fn array2str(ArrayView[Byte]) -> String
