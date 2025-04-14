@@ -5,8 +5,18 @@
 /// Use of this source code is governed by a BSD-style
 /// license that can be found in the LICENSE file.
 
-///| `std_encode2bytes` base64-encodes the provided bytes using Standard encoding.
+///|
+/// `std_encode2bytes` base64-encodes the provided bytes using Standard encoding.
 /// Setting `no_padding=true` is used for raw encoding.
+///
+/// Note that standard encoding uses `+` and `/` characters whereas URL encoding uses `-` and `_`.
+///
+/// Examples:
+/// ```
+/// let b : Bytes = "+/ Hello, 世界! 🌍"
+/// inspect!(std_encode2bytes(b.to_fixedarray()) |> bytes2str(), content="Ky8gSGVsbG8sIOS4lueVjCEg8J+MjQ==")
+/// inspect!(std_encode2bytes(b.to_fixedarray(), no_padding=true) |> bytes2str(), content="Ky8gSGVsbG8sIOS4lueVjCEg8J+MjQ")
+/// ```
 pub fn std_encode2bytes(
   src : FixedArray[Byte],
   no_padding~ : Bool = false
@@ -19,8 +29,18 @@ pub fn std_encode2bytes(
   Bytes::from_iter(buf.iter())
 }
 
-///| `std_encode2str` base64-encodes the provided bytes using Standard encoding and returns a String.
+///|
+/// `std_encode2str` base64-encodes the provided bytes using Standard encoding and returns a String.
 /// Setting `no_padding=true` is used for raw encoding.
+///
+/// Note that standard encoding uses `+` and `/` characters whereas URL encoding uses `-` and `_`.
+///
+/// Examples:
+/// ```
+/// let b : Bytes = "+/ Hello, 世界! 🌍"
+/// inspect!(std_encode2str(b.to_fixedarray()), content="Ky8gSGVsbG8sIOS4lueVjCEg8J+MjQ==")
+/// inspect!(std_encode2str(b.to_fixedarray(), no_padding=true), content="Ky8gSGVsbG8sIOS4lueVjCEg8J+MjQ")
+/// ```
 pub fn std_encode2str(
   src : FixedArray[Byte],
   no_padding~ : Bool = false
@@ -28,8 +48,18 @@ pub fn std_encode2str(
   bytes2str(std_encode2bytes(src, no_padding~))
 }
 
-///| `url_encode2bytes` base64-encodes the provided bytes using URL encoding.
+///|
+/// `url_encode2bytes` base64-encodes the provided bytes using URL encoding.
 /// Setting `no_padding=true` is used for raw encoding.
+///
+/// Note that standard encoding uses `+` and `/` characters whereas URL encoding uses `-` and `_`.
+///
+/// Examples:
+/// ```
+/// let b : Bytes = "+/ Hello, 世界! 🌍"
+/// inspect!(url_encode2bytes(b.to_fixedarray()) |> bytes2str(), content="Ky8gSGVsbG8sIOS4lueVjCEg8J-MjQ==")
+/// inspect!(url_encode2bytes(b.to_fixedarray(), no_padding=true) |> bytes2str(), content="Ky8gSGVsbG8sIOS4lueVjCEg8J-MjQ")
+/// ```
 pub fn url_encode2bytes(
   src : FixedArray[Byte],
   no_padding~ : Bool = false
@@ -42,8 +72,18 @@ pub fn url_encode2bytes(
   Bytes::from_iter(buf.iter())
 }
 
-///| `url_encode2str` base64-encodes the provided bytes using URL encoding and returns a String.
+///|
+/// `url_encode2str` base64-encodes the provided bytes using URL encoding and returns a String.
 /// Setting `no_padding=true` is used for raw encoding.
+///
+/// Note that standard encoding uses `+` and `/` characters whereas URL encoding uses `-` and `_`.
+///
+/// Examples:
+/// ```
+/// let b : Bytes = "+/ Hello, 世界! 🌍"
+/// inspect!(url_encode2str(b.to_fixedarray()), content="Ky8gSGVsbG8sIOS4lueVjCEg8J-MjQ==")
+/// inspect!(url_encode2str(b.to_fixedarray(), no_padding=true), content="Ky8gSGVsbG8sIOS4lueVjCEg8J-MjQ")
+/// ```
 pub fn url_encode2str(
   src : FixedArray[Byte],
   no_padding~ : Bool = false

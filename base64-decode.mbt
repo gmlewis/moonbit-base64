@@ -1,4 +1,5 @@
-///| This package is based on the Go implementation found here:
+///|
+/// This package is based on the Go implementation found here:
 /// https://cs.opensource.google/go/go/+/master:src/encoding/base64/base64.go
 /// which has the copyright notice:
 /// Copyright 2009 The Go Authors. All rights reserved.
@@ -6,8 +7,18 @@
 /// license that can be found in the LICENSE file.
 pub(all) type! CorruptInputError String derive(Show)
 
-///| `std_decode2bytes` base64-decodes the provided bytes using Standard encoding.
+///|
+/// `std_decode2bytes` base64-decodes the provided bytes using Standard encoding.
 /// Setting `no_padding=true` is used for raw decoding.
+///
+/// Note that standard encoding uses `+` and `/` characters whereas URL encoding uses `-` and `_`.
+///
+/// Examples:
+/// ```
+/// let b = "+/ Hello, 世界! 🌍"
+/// inspect!(std_decode2bytes!("Ky8gSGVsbG8sIOS4lueVjCEg8J+MjQ==") |> bytes2str(), content=b)
+/// inspect!(std_decode2bytes!("Ky8gSGVsbG8sIOS4lueVjCEg8J+MjQ", no_padding=true) |> bytes2str(), content=b)
+/// ```
 pub fn std_decode2bytes(
   src : String,
   no_padding~ : Bool = false
@@ -21,8 +32,18 @@ pub fn std_decode2bytes(
   Bytes::from_iter(buf.iter().take(n))
 }
 
-///| `std_decode2str` base64-decodes the provided bytes using Standard encoding and returns a String.
+///|
+/// `std_decode2str` base64-decodes the provided bytes using Standard encoding and returns a String.
 /// Setting `no_padding=true` is used for raw decoding.
+///
+/// Note that standard encoding uses `+` and `/` characters whereas URL encoding uses `-` and `_`.
+///
+/// Examples:
+/// ```
+/// let b = "+/ Hello, 世界! 🌍"
+/// inspect!(std_decode2str!("Ky8gSGVsbG8sIOS4lueVjCEg8J+MjQ=="), content=b)
+/// inspect!(std_decode2str!("Ky8gSGVsbG8sIOS4lueVjCEg8J+MjQ", no_padding=true), content=b)
+/// ```
 pub fn std_decode2str(
   src : String,
   no_padding~ : Bool = false
@@ -30,8 +51,18 @@ pub fn std_decode2str(
   bytes2str(std_decode2bytes!(src, no_padding~))
 }
 
-///| `url_decode2bytes` base64-decodes the provided bytes using URL encoding.
+///|
+/// `url_decode2bytes` base64-decodes the provided bytes using URL encoding.
 /// Setting `no_padding=true` is used for raw decoding.
+///
+/// Note that standard encoding uses `+` and `/` characters whereas URL encoding uses `-` and `_`.
+///
+/// Examples:
+/// ```
+/// let b = "+/ Hello, 世界! 🌍"
+/// inspect!(url_decode2bytes!("Ky8gSGVsbG8sIOS4lueVjCEg8J-MjQ==") |> bytes2str(), content=b)
+/// inspect!(url_decode2bytes!("Ky8gSGVsbG8sIOS4lueVjCEg8J-MjQ", no_padding=true) |> bytes2str(), content=b)
+/// ```
 pub fn url_decode2bytes(
   src : String,
   no_padding~ : Bool = false
@@ -45,8 +76,18 @@ pub fn url_decode2bytes(
   Bytes::from_iter(buf.iter().take(n))
 }
 
-///| `url_decode2str` base64-decodes the provided bytes using URL encoding and returns a String.
+///|
+/// `url_decode2str` base64-decodes the provided bytes using URL encoding and returns a String.
 /// Setting `no_padding=true` is used for raw decoding.
+///
+/// Note that standard encoding uses `+` and `/` characters whereas URL encoding uses `-` and `_`.
+///
+/// Examples:
+/// ```
+/// let b = "+/ Hello, 世界! 🌍"
+/// inspect!(url_decode2str!("Ky8gSGVsbG8sIOS4lueVjCEg8J-MjQ=="), content=b)
+/// inspect!(url_decode2str!("Ky8gSGVsbG8sIOS4lueVjCEg8J-MjQ", no_padding=true), content=b)
+/// ```
 pub fn url_decode2str(
   src : String,
   no_padding~ : Bool = false
