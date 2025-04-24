@@ -138,7 +138,7 @@ fn url_ref(s : String) -> String {
 // Convert a reference string to raw, unpadded format
 ///|
 fn raw_ref(s : String) -> String {
-  @string.trim_end(s, "=")
+  @string.trim_end(s, "=").to_string()
 }
 
 // Both URL and unpadding conversions
