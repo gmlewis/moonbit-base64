@@ -87,9 +87,7 @@ test "std_decode2str: empty input" {
 test "std_decode2str with no_padding works" {
   let str =
     #|eyJ1c2VyX2hhbmRsZSI6InVzZXItMSIsImlzcyI6Imdlbi11c2VyLWp3dCIsInN1YiI6InVzZXJfY3JhMGF1N3JhY2swZGNrZjlkaGciLCJleHAiOjE3MjUxODU3OTEsIm5iZiI6MTcyNTE3MTM5MSwiaWF0IjoxNzI1MTcxMzkxfQ
-  let got = try {
-    @base64.std_decode2str!(str, no_padding=true)
-  } catch {
+  let got = try @base64.std_decode2str!(str, no_padding=true) catch {
     e => raise e
   }
   let want =
