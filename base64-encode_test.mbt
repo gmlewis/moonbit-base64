@@ -130,15 +130,15 @@ fn std_ref(s : String) -> String {
 // Convert a reference string to URL-encoding
 ///|
 fn url_ref(s : String) -> String {
-  let s = @string.replace_all(s, old="+", new="-")
-  let s = @string.replace_all(s, old="/", new="_")
+  let s = s.replace_all(old="+", new="-")
+  let s = s.replace_all(old="/", new="_")
   s
 }
 
 // Convert a reference string to raw, unpadded format
 ///|
 fn raw_ref(s : String) -> String {
-  @string.trim_end(s, "=").to_string()
+  s.trim_end("=").to_string()
 }
 
 // Both URL and unpadding conversions
