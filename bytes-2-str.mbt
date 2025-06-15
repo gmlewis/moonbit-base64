@@ -17,11 +17,8 @@ pub fn bytes2str(b : Bytes) -> String {
 ///|
 test "bytes2str works on simple case" {
   let got = bytes2str(b"simple case")
-  inspect!(got, content="simple case")
-  inspect!(
-    bytes2str("+/ Hello, 世界! 🌍"),
-    content="+/ Hello, 世界! 🌍",
-  )
+  inspect(got, content="simple case")
+  inspect(bytes2str("+/ Hello, 世界! 🌍"), content="+/ Hello, 世界! 🌍")
 }
 
 ///|
@@ -47,7 +44,7 @@ pub fn array2str(b : ArrayView[Byte]) -> String {
 test "array2str works on simple case" {
   let inp = b"simple case".to_array()
   let got = array2str(inp[:])
-  inspect!(got, content="simple case")
+  inspect(got, content="simple case")
   let arr = b"+/ Hello, 世界! 🌍".to_array()
-  inspect!(array2str(arr[:]), content="+/ Hello, 世界! 🌍")
+  inspect(array2str(arr[:]), content="+/ Hello, 世界! 🌍")
 }

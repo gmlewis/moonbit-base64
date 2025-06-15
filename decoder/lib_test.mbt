@@ -4,12 +4,12 @@
 ///|
 test "utf8" {
   @decoder.utf8([b'a', b'b', b'c'].iter()).collect()
-  |> inspect!(content="['a', 'b', 'c']")
+  |> inspect(content="['a', 'b', 'c']")
   @decoder.utf8([b'\xe2', b'\x99', b'\xa5'].iter()).collect()
-  |> inspect!(content="['♥']")
+  |> inspect(content="['♥']")
   let bytes = b"✓ Hello, 世界! 🌍"
   @decoder.utf8(bytes.iter()).collect()
-  |> inspect!(
+  |> inspect(
     content="['✓', ' ', 'H', 'e', 'l', 'l', 'o', ',', ' ', '世', '界', '!', ' ', '🌍']",
   )
   let bytes = [
@@ -18,7 +18,7 @@ test "utf8" {
     b'\x20', b'\xF0', b'\x9F', b'\x8C', b'\x8D',
   ]
   let got = @decoder.utf8(bytes.iter()).collect()
-  inspect!(
+  inspect(
     got,
     content="['✓', ' ', 'H', 'e', 'l', 'l', 'o', ',', ' ', '世', '界', '!', ' ', '🌍']",
   )

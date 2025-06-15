@@ -5,7 +5,7 @@
 /// Copyright 2009 The Go Authors. All rights reserved.
 /// Use of this source code is governed by a BSD-style
 /// license that can be found in the LICENSE file.
-pub(all) type! CorruptInputError String derive(Show)
+pub(all) suberror CorruptInputError String derive(Show)
 
 ///|
 /// `std_decode2bytes` base64-decodes the provided bytes using Standard encoding.
@@ -22,13 +22,13 @@ pub(all) type! CorruptInputError String derive(Show)
 pub fn std_decode2bytes(
   src : String,
   no_padding~ : Bool = false
-) -> Bytes!CorruptInputError {
+) -> Bytes raise CorruptInputError {
   if src.length() == 0 {
     return Bytes::from_array([])
   }
   let buf = FixedArray::make(decoded_len(src.length(), no_padding), b'\x00')
   let src = FixedArray::from_iter(str2bytes(src).iter())
-  let n = decode_buf!(std_decode_map, buf, src, no_padding)
+  let n = decode_buf(std_decode_map, buf, src, no_padding)
   Bytes::from_iter(buf.iter().take(n))
 }
 
@@ -47,8 +47,8 @@ pub fn std_decode2bytes(
 pub fn std_decode2str(
   src : String,
   no_padding~ : Bool = false
-) -> String!CorruptInputError {
-  bytes2str(std_decode2bytes!(src, no_padding~))
+) -> String raise CorruptInputError {
+  bytes2str(std_decode2bytes(src, no_padding~))
 }
 
 ///|
@@ -66,13 +66,13 @@ pub fn std_decode2str(
 pub fn url_decode2bytes(
   src : String,
   no_padding~ : Bool = false
-) -> Bytes!CorruptInputError {
+) -> Bytes raise CorruptInputError {
   if src.length() == 0 {
     return Bytes::from_array([])
   }
   let buf = FixedArray::make(decoded_len(src.length(), no_padding), b'\x00')
   let src = FixedArray::from_iter(str2bytes(src).iter())
-  let n = decode_buf!(url_decode_map, buf, src, no_padding)
+  let n = decode_buf(url_decode_map, buf, src, no_padding)
   Bytes::from_iter(buf.iter().take(n))
 }
 
@@ -91,8 +91,8 @@ pub fn url_decode2bytes(
 pub fn url_decode2str(
   src : String,
   no_padding~ : Bool = false
-) -> String!CorruptInputError {
-  bytes2str(url_decode2bytes!(src, no_padding~))
+) -> String raise CorruptInputError {
+  bytes2str(url_decode2bytes(src, no_padding~))
 }
 
 ///|
@@ -104,7 +104,7 @@ fn decode_quantum(
   si : Int,
   decode_pad_char : Byte,
   no_padding : Bool
-) -> (Int, Int)!CorruptInputError {
+) -> (Int, Int) raise CorruptInputError {
   let dbuf : FixedArray[Byte] = FixedArray::make(4, b'\x00')
   let mut dlen = 4
   let mut si = si
@@ -199,7 +199,7 @@ fn decode_buf(
   dst : FixedArray[Byte],
   src : FixedArray[Byte],
   no_padding : Bool
-) -> Int!CorruptInputError {
+) -> Int raise CorruptInputError {
   if src.length() == 0 {
     return 0
   }
@@ -219,7 +219,7 @@ fn decode_buf(
       n += 3
       si += 4
     } else {
-      let pair = decode_quantum!(
+      let pair = decode_quantum(
         decode_map, dst, n, src, si, decode_pad_char, no_padding,
       )
       si = pair.0
@@ -228,7 +228,7 @@ fn decode_buf(
     }
   }
   for ; si < src.length(); {
-    let pair = decode_quantum!(
+    let pair = decode_quantum(
       decode_map, dst, n, src, si, decode_pad_char, no_padding,
     )
     si = pair.0

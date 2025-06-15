@@ -8,13 +8,11 @@ fn main {
 
   //
   let msg_bytes : Bytes = "U29tZSBleGFtcGxlIHRleHQ="
-  let msg = try @base64.std_decode2str!(@base64.bytes2str(msg_bytes)) catch {
+  let msg = @base64.std_decode2str(@base64.bytes2str(msg_bytes)) catch {
     _ => abort("fail")
   }
   println("msg from bytes: '\{msg}'")
   let msg_string : String = "U29tZSBleGFtcGxlIHRleHQ="
-  let msg = try @base64.std_decode2str!(msg_string) catch {
-    _ => abort("fail")
-  }
+  let msg = @base64.std_decode2str(msg_string) catch { _ => abort("fail") }
   println("msg from string: '\{msg}'")
 }
