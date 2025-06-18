@@ -3,7 +3,7 @@
 ///
 /// Examples:
 /// ```
-/// inspect!(bytes2str("+/ Hello, 世界! 🌍"), content="+/ Hello, 世界! 🌍")
+/// inspect(bytes2str("+/ Hello, 世界! 🌍"), content="+/ Hello, 世界! 🌍")
 /// ```
 pub fn bytes2str(b : Bytes) -> String {
   let chars = (b.iter() |> @decoder.utf8()).collect()
@@ -29,7 +29,7 @@ test "bytes2str works on simple case" {
 /// Examples:
 /// ```
 /// let arr = b"+/ Hello, 世界! 🌍".to_array()
-/// inspect!(array2str(arr[:]), content="+/ Hello, 世界! 🌍")
+/// inspect(array2str(arr[:]), content="+/ Hello, 世界! 🌍")
 /// ```
 pub fn array2str(b : ArrayView[Byte]) -> String {
   let chars = (b.iter() |> @decoder.utf8()).collect()

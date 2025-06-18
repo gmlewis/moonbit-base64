@@ -16,8 +16,8 @@ pub(all) suberror CorruptInputError String derive(Show)
 /// Examples:
 /// ```
 /// let b = "+/ Hello, 世界! 🌍"
-/// inspect!(std_decode2bytes!("Ky8gSGVsbG8sIOS4lueVjCEg8J+MjQ==") |> bytes2str(), content=b)
-/// inspect!(std_decode2bytes!("Ky8gSGVsbG8sIOS4lueVjCEg8J+MjQ", no_padding=true) |> bytes2str(), content=b)
+/// inspect(std_decode2bytes("Ky8gSGVsbG8sIOS4lueVjCEg8J+MjQ==") |> bytes2str(), content=b)
+/// inspect(std_decode2bytes("Ky8gSGVsbG8sIOS4lueVjCEg8J+MjQ", no_padding=true) |> bytes2str(), content=b)
 /// ```
 pub fn std_decode2bytes(
   src : String,
@@ -41,8 +41,8 @@ pub fn std_decode2bytes(
 /// Examples:
 /// ```
 /// let b = "+/ Hello, 世界! 🌍"
-/// inspect!(std_decode2str!("Ky8gSGVsbG8sIOS4lueVjCEg8J+MjQ=="), content=b)
-/// inspect!(std_decode2str!("Ky8gSGVsbG8sIOS4lueVjCEg8J+MjQ", no_padding=true), content=b)
+/// inspect(std_decode2str("Ky8gSGVsbG8sIOS4lueVjCEg8J+MjQ=="), content=b)
+/// inspect(std_decode2str("Ky8gSGVsbG8sIOS4lueVjCEg8J+MjQ", no_padding=true), content=b)
 /// ```
 pub fn std_decode2str(
   src : String,
@@ -60,8 +60,8 @@ pub fn std_decode2str(
 /// Examples:
 /// ```
 /// let b = "+/ Hello, 世界! 🌍"
-/// inspect!(url_decode2bytes!("Ky8gSGVsbG8sIOS4lueVjCEg8J-MjQ==") |> bytes2str(), content=b)
-/// inspect!(url_decode2bytes!("Ky8gSGVsbG8sIOS4lueVjCEg8J-MjQ", no_padding=true) |> bytes2str(), content=b)
+/// inspect(url_decode2bytes("Ky8gSGVsbG8sIOS4lueVjCEg8J-MjQ==") |> bytes2str(), content=b)
+/// inspect(url_decode2bytes("Ky8gSGVsbG8sIOS4lueVjCEg8J-MjQ", no_padding=true) |> bytes2str(), content=b)
 /// ```
 pub fn url_decode2bytes(
   src : String,
@@ -85,8 +85,8 @@ pub fn url_decode2bytes(
 /// Examples:
 /// ```
 /// let b = "+/ Hello, 世界! 🌍"
-/// inspect!(url_decode2str!("Ky8gSGVsbG8sIOS4lueVjCEg8J-MjQ=="), content=b)
-/// inspect!(url_decode2str!("Ky8gSGVsbG8sIOS4lueVjCEg8J-MjQ", no_padding=true), content=b)
+/// inspect(url_decode2str("Ky8gSGVsbG8sIOS4lueVjCEg8J-MjQ=="), content=b)
+/// inspect(url_decode2str("Ky8gSGVsbG8sIOS4lueVjCEg8J-MjQ", no_padding=true), content=b)
 /// ```
 pub fn url_decode2str(
   src : String,
@@ -249,6 +249,7 @@ fn be_put_uint32(b : FixedArray[Byte], offset : Int, value : UInt) -> Unit {
 // assemble32 assembles 4 base64 digits into 3 bytes.
 // Each digit comes from the decode map, and will be 0xff
 // if it came from an invalid character.
+
 ///|
 fn assemble32(n1 : Byte, n2 : Byte, n3 : Byte, n4 : Byte) -> (UInt, Bool) {
   // Check that all the digits are valid. If any of them was 0xff, their

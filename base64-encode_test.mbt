@@ -122,12 +122,14 @@ let pairs = [
 ]
 
 // Do nothing to a reference base64 string (leave in standard format)
+
 ///|
 fn std_ref(s : String) -> String {
   s
 }
 
 // Convert a reference string to URL-encoding
+
 ///|
 fn url_ref(s : String) -> String {
   let s = s.replace_all(old="+", new="-")
@@ -136,12 +138,14 @@ fn url_ref(s : String) -> String {
 }
 
 // Convert a reference string to raw, unpadded format
+
 ///|
 fn raw_ref(s : String) -> String {
   s.trim_end("=").to_string()
 }
 
 // Both URL and unpadding conversions
+
 ///|
 fn raw_url_ref(s : String) -> String {
   raw_ref(url_ref(s))

@@ -14,8 +14,8 @@
 /// Examples:
 /// ```
 /// let b : Bytes = "+/ Hello, 世界! 🌍"
-/// inspect!(std_encode2bytes(b.to_fixedarray()) |> bytes2str(), content="Ky8gSGVsbG8sIOS4lueVjCEg8J+MjQ==")
-/// inspect!(std_encode2bytes(b.to_fixedarray(), no_padding=true) |> bytes2str(), content="Ky8gSGVsbG8sIOS4lueVjCEg8J+MjQ")
+/// inspect(std_encode2bytes(b.to_fixedarray()) |> bytes2str(), content="Ky8gSGVsbG8sIOS4lueVjCEg8J+MjQ==")
+/// inspect(std_encode2bytes(b.to_fixedarray(), no_padding=true) |> bytes2str(), content="Ky8gSGVsbG8sIOS4lueVjCEg8J+MjQ")
 /// ```
 pub fn std_encode2bytes(
   src : FixedArray[Byte],
@@ -38,8 +38,8 @@ pub fn std_encode2bytes(
 /// Examples:
 /// ```
 /// let b : Bytes = "+/ Hello, 世界! 🌍"
-/// inspect!(std_encode2str(b.to_fixedarray()), content="Ky8gSGVsbG8sIOS4lueVjCEg8J+MjQ==")
-/// inspect!(std_encode2str(b.to_fixedarray(), no_padding=true), content="Ky8gSGVsbG8sIOS4lueVjCEg8J+MjQ")
+/// inspect(std_encode2str(b.to_fixedarray()), content="Ky8gSGVsbG8sIOS4lueVjCEg8J+MjQ==")
+/// inspect(std_encode2str(b.to_fixedarray(), no_padding=true), content="Ky8gSGVsbG8sIOS4lueVjCEg8J+MjQ")
 /// ```
 pub fn std_encode2str(
   src : FixedArray[Byte],
@@ -57,8 +57,8 @@ pub fn std_encode2str(
 /// Examples:
 /// ```
 /// let b : Bytes = "+/ Hello, 世界! 🌍"
-/// inspect!(url_encode2bytes(b.to_fixedarray()) |> bytes2str(), content="Ky8gSGVsbG8sIOS4lueVjCEg8J-MjQ==")
-/// inspect!(url_encode2bytes(b.to_fixedarray(), no_padding=true) |> bytes2str(), content="Ky8gSGVsbG8sIOS4lueVjCEg8J-MjQ")
+/// inspect(url_encode2bytes(b.to_fixedarray()) |> bytes2str(), content="Ky8gSGVsbG8sIOS4lueVjCEg8J-MjQ==")
+/// inspect(url_encode2bytes(b.to_fixedarray(), no_padding=true) |> bytes2str(), content="Ky8gSGVsbG8sIOS4lueVjCEg8J-MjQ")
 /// ```
 pub fn url_encode2bytes(
   src : FixedArray[Byte],
@@ -81,8 +81,8 @@ pub fn url_encode2bytes(
 /// Examples:
 /// ```
 /// let b : Bytes = "+/ Hello, 世界! 🌍"
-/// inspect!(url_encode2str(b.to_fixedarray()), content="Ky8gSGVsbG8sIOS4lueVjCEg8J-MjQ==")
-/// inspect!(url_encode2str(b.to_fixedarray(), no_padding=true), content="Ky8gSGVsbG8sIOS4lueVjCEg8J-MjQ")
+/// inspect(url_encode2str(b.to_fixedarray()), content="Ky8gSGVsbG8sIOS4lueVjCEg8J-MjQ==")
+/// inspect(url_encode2str(b.to_fixedarray(), no_padding=true), content="Ky8gSGVsbG8sIOS4lueVjCEg8J-MjQ")
 /// ```
 pub fn url_encode2str(
   src : FixedArray[Byte],

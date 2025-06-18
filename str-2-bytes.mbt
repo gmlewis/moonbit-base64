@@ -3,7 +3,7 @@
 ///
 /// Examples:
 /// ```
-/// inspect!(str2bytes("+/ Hello, 世界! 🌍"), content=
+/// inspect(str2bytes("+/ Hello, 世界! 🌍"), content=
 ///   #|b"\x2b\x2f\x20\x48\x65\x6c\x6c\x6f\x2c\x20\xe4\xb8\x96\xe7\x95\x8c\x21\x20\xf0\x9f\x8c\x8d"
 /// )
 /// ```
@@ -34,7 +34,7 @@ test "str2bytes works on simple case" {
 ///
 /// Examples:
 /// ```
-/// inspect!(str2array("🌍"), content="[b'\\xF0', b'\\x9F', b'\\x8C', b'\\x8D']")
+/// inspect(str2array("🌍"), content="[b'\\xF0', b'\\x9F', b'\\x8C', b'\\x8D']")
 /// ```
 pub fn str2array(s : String) -> Array[Byte] {
   s.iter() |> @encoder.utf8() |> Array::from_iter()
