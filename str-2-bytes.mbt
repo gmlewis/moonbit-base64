@@ -3,9 +3,9 @@
 ///
 /// Examples:
 /// ```
-/// inspect(str2bytes("+/ Hello, 世界! 🌍"), content=
+/// inspect(str2bytes("+/ Hello, 世界! 🌍"), content=(
 ///   #|b"\x2b\x2f\x20\x48\x65\x6c\x6c\x6f\x2c\x20\xe4\xb8\x96\xe7\x95\x8c\x21\x20\xf0\x9f\x8c\x8d"
-/// )
+/// ))
 /// ```
 pub fn str2bytes(s : String) -> Bytes {
   s.iter() |> @encoder.utf8() |> Bytes::from_iter()
@@ -16,15 +16,15 @@ test "str2bytes works on simple case" {
   let got = str2bytes("simple case")
   inspect(
     got,
-    content=
+    content=(
       #|b"\x73\x69\x6d\x70\x6c\x65\x20\x63\x61\x73\x65"
-    ,
+    ),
   )
   inspect(
     str2bytes("+/ Hello, 世界! 🌍"),
-    content=
+    content=(
       #|b"\x2b\x2f\x20\x48\x65\x6c\x6c\x6f\x2c\x20\xe4\xb8\x96\xe7\x95\x8c\x21\x20\xf0\x9f\x8c\x8d"
-    ,
+    ),
   )
 }
 
