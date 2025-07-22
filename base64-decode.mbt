@@ -21,7 +21,7 @@ pub(all) suberror CorruptInputError String derive(Show)
 /// ```
 pub fn std_decode2bytes(
   src : String,
-  no_padding~ : Bool = false
+  no_padding~ : Bool = false,
 ) -> Bytes raise CorruptInputError {
   if src.length() == 0 {
     return Bytes::from_array([])
@@ -46,7 +46,7 @@ pub fn std_decode2bytes(
 /// ```
 pub fn std_decode2str(
   src : String,
-  no_padding~ : Bool = false
+  no_padding~ : Bool = false,
 ) -> String raise CorruptInputError {
   bytes2str(std_decode2bytes(src, no_padding~))
 }
@@ -65,7 +65,7 @@ pub fn std_decode2str(
 /// ```
 pub fn url_decode2bytes(
   src : String,
-  no_padding~ : Bool = false
+  no_padding~ : Bool = false,
 ) -> Bytes raise CorruptInputError {
   if src.length() == 0 {
     return Bytes::from_array([])
@@ -90,7 +90,7 @@ pub fn url_decode2bytes(
 /// ```
 pub fn url_decode2str(
   src : String,
-  no_padding~ : Bool = false
+  no_padding~ : Bool = false,
 ) -> String raise CorruptInputError {
   bytes2str(url_decode2bytes(src, no_padding~))
 }
@@ -103,7 +103,7 @@ fn decode_quantum(
   src : FixedArray[Byte],
   si : Int,
   decode_pad_char : Byte,
-  no_padding : Bool
+  no_padding : Bool,
 ) -> (Int, Int) raise CorruptInputError {
   let dbuf : FixedArray[Byte] = FixedArray::make(4, b'\x00')
   let mut dlen = 4
@@ -198,7 +198,7 @@ fn decode_buf(
   decode_map : FixedArray[Byte],
   dst : FixedArray[Byte],
   src : FixedArray[Byte],
-  no_padding : Bool
+  no_padding : Bool,
 ) -> Int raise CorruptInputError {
   if src.length() == 0 {
     return 0
