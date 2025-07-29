@@ -26,9 +26,11 @@ fn url_encode2bytes(FixedArray[Byte], no_padding~ : Bool = ..) -> Bytes
 
 fn url_encode2str(FixedArray[Byte], no_padding~ : Bool = ..) -> String
 
-// Types and methods
+// Errors
 pub(all) suberror CorruptInputError String
 impl Show for CorruptInputError
+
+// Types and methods
 
 // Type aliases
 

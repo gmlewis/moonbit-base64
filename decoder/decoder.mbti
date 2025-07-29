@@ -4,6 +4,8 @@ package "gmlewis/base64/decoder"
 // Values
 fn utf8(Iter[Byte]) -> Iter[Char]
 
+// Errors
+
 // Types and methods
 
 // Type aliases
