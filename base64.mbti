@@ -6,25 +6,25 @@ fn array2str(ArrayView[Byte]) -> String
 
 fn bytes2str(Bytes) -> String
 
-fn std_decode2bytes(String, no_padding~ : Bool = ..) -> Bytes raise CorruptInputError
+fn std_decode2bytes(String, no_padding? : Bool) -> Bytes raise CorruptInputError
 
-fn std_decode2str(String, no_padding~ : Bool = ..) -> String raise CorruptInputError
+fn std_decode2str(String, no_padding? : Bool) -> String raise CorruptInputError
 
-fn std_encode2bytes(FixedArray[Byte], no_padding~ : Bool = ..) -> Bytes
+fn std_encode2bytes(FixedArray[Byte], no_padding? : Bool) -> Bytes
 
-fn std_encode2str(FixedArray[Byte], no_padding~ : Bool = ..) -> String
+fn std_encode2str(FixedArray[Byte], no_padding? : Bool) -> String
 
 fn str2array(String) -> Array[Byte]
 
 fn str2bytes(String) -> Bytes
 
-fn url_decode2bytes(String, no_padding~ : Bool = ..) -> Bytes raise CorruptInputError
+fn url_decode2bytes(String, no_padding? : Bool) -> Bytes raise CorruptInputError
 
-fn url_decode2str(String, no_padding~ : Bool = ..) -> String raise CorruptInputError
+fn url_decode2str(String, no_padding? : Bool) -> String raise CorruptInputError
 
-fn url_encode2bytes(FixedArray[Byte], no_padding~ : Bool = ..) -> Bytes
+fn url_encode2bytes(FixedArray[Byte], no_padding? : Bool) -> Bytes
 
-fn url_encode2str(FixedArray[Byte], no_padding~ : Bool = ..) -> String
+fn url_encode2str(FixedArray[Byte], no_padding? : Bool) -> String
 
 // Errors
 pub(all) suberror CorruptInputError String
