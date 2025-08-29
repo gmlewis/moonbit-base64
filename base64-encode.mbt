@@ -19,7 +19,7 @@
 /// ```
 pub fn std_encode2bytes(
   src : FixedArray[Byte],
-  no_padding~ : Bool = false,
+  no_padding? : Bool = false,
 ) -> Bytes {
   if src.length() == 0 {
     return Bytes::from_array([])
@@ -43,7 +43,7 @@ pub fn std_encode2bytes(
 /// ```
 pub fn std_encode2str(
   src : FixedArray[Byte],
-  no_padding~ : Bool = false,
+  no_padding? : Bool = false,
 ) -> String {
   bytes2str(std_encode2bytes(src, no_padding~))
 }
@@ -62,7 +62,7 @@ pub fn std_encode2str(
 /// ```
 pub fn url_encode2bytes(
   src : FixedArray[Byte],
-  no_padding~ : Bool = false,
+  no_padding? : Bool = false,
 ) -> Bytes {
   if src.length() == 0 {
     return Bytes::from_array([])
@@ -86,7 +86,7 @@ pub fn url_encode2bytes(
 /// ```
 pub fn url_encode2str(
   src : FixedArray[Byte],
-  no_padding~ : Bool = false,
+  no_padding? : Bool = false,
 ) -> String {
   bytes2str(url_encode2bytes(src, no_padding~))
 }
