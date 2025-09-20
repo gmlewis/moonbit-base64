@@ -8,7 +8,7 @@
 /// ))
 /// ```
 pub fn str2bytes(s : String) -> Bytes {
-  s.iter() |> @encoder.utf8() |> Bytes::from_iter()
+  @encoding/utf8.encode(s)
 }
 
 ///|
@@ -37,7 +37,7 @@ test "str2bytes works on simple case" {
 /// inspect(str2array("🌍"), content="[b'\\xF0', b'\\x9F', b'\\x8C', b'\\x8D']")
 /// ```
 pub fn str2array(s : String) -> Array[Byte] {
-  s.iter() |> @encoder.utf8() |> Array::from_iter()
+  @encoding/utf8.encode(s) |> Bytes::to_array()
 }
 
 ///|

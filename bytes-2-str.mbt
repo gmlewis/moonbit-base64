@@ -6,7 +6,7 @@
 /// inspect(bytes2str("+/ Hello, 世界! 🌍"), content="+/ Hello, 世界! 🌍")
 /// ```
 pub fn bytes2str(b : Bytes) -> String {
-  let chars = (b.iter() |> @decoder.utf8()).collect()
+  let chars = @encoding/utf8.decode_lossy(b)
   let buf = @buffer.new(size_hint=chars.length())
   for ch in chars {
     buf.write_char(ch)
@@ -32,7 +32,8 @@ test "bytes2str works on simple case" {
 /// inspect(array2str(arr[:]), content="+/ Hello, 世界! 🌍")
 /// ```
 pub fn array2str(b : ArrayView[Byte]) -> String {
-  let chars = (b.iter() |> @decoder.utf8()).collect()
+  let bytes = Bytes::from_iter(b.iter())
+  let chars = @encoding/utf8.decode_lossy(bytes)
   let buf = @buffer.new(size_hint=chars.length())
   for ch in chars {
     buf.write_char(ch)

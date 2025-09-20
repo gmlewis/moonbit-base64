@@ -1,6 +1,1 @@
-{
-  "import": [
-    "gmlewis/base64/decoder",
-    "gmlewis/base64/encoder"
-  ]
-}
+{}
