@@ -141,7 +141,7 @@ fn url_ref(s : String) -> String {
 
 ///|
 fn raw_ref(s : String) -> String {
-  s.trim_end("=").to_string()
+  s.trim_end(char_set="=").to_string()
 }
 
 // Both URL and unpadding conversions

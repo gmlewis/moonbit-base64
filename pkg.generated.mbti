@@ -28,6 +28,8 @@ fn url_encode2str(FixedArray[Byte], no_padding? : Bool) -> String
 
 // Errors
 pub(all) suberror CorruptInputError String
+fn CorruptInputError::output(Self, &Logger) -> Unit // from trait `Show`
+fn CorruptInputError::to_string(Self) -> String // from trait `Show`
 impl Show for CorruptInputError
 
 // Types and methods
