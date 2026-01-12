@@ -1,0 +1,5 @@
+import { "gmlewis/base64" }
+
+options(
+  "is-main": true,
+)
