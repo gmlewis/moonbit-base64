@@ -1,4 +1,7 @@
-import { "gmlewis/base64" }
+import {
+  "gmlewis/base64",
+  "moonbitlang/core/builtin",
+}
 
 options(
   "is-main": true,
