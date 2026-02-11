@@ -22,8 +22,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup MoonBit
-        uses: hustcer/setup-moonbit@v1
+      - name: install-ubuntu
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        run: |
+          /bin/bash -c "$(curl -fsSL https://cli.moonbitlang.com/install/unix.sh)"
+          echo "/home/runner/.moon/bin" >> $GITHUB_PATH
 
       - name: moon version
         run: |
