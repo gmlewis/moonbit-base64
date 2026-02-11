@@ -2,6 +2,8 @@ name: Daily Tests
 on:
   schedule:
     - cron: "0 7 * * *"
+  # Run around midnight Pacific time.
+  # GitHub runs crons on UTC time.
   workflow_dispatch:
 
 concurrency:
