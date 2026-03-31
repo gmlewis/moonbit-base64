@@ -115,7 +115,7 @@ fn decode_quantum(
       if j == 0 {
         return (si, 0)
       }
-      if j == 1 || not(no_padding) {
+      if j == 1 || !no_padding {
         let pos = si - j
         raise CorruptInputError("illegal base64 data at input byte \{pos}")
       }

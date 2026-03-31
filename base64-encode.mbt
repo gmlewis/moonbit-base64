@@ -127,12 +127,12 @@ fn encode_buf(
   match remain {
     2 => {
       dst[di + 2] = encode[((val >> 6) & 0x3F).reinterpret_as_int()]
-      if not(no_padding) {
+      if !no_padding {
         dst[di + 3] = pad_char
       }
     }
     1 =>
-      if not(no_padding) {
+      if !no_padding {
         dst[di + 2] = pad_char
         dst[di + 3] = pad_char
       }
