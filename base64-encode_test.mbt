@@ -184,7 +184,7 @@ test "pairs encode properly" {
       let input = FixedArray::from_array(tt.0.to_array())
       let got = (enc.0)(input)
       let want = (enc.1)(tt.1)
-      assert_eq(got, want)
+      inspect(got, content=want)
     }
   }
 }
