@@ -18,7 +18,10 @@ pub fn bytes2str(b : Bytes) -> String {
 test "bytes2str works on simple case" {
   let got = bytes2str(b"simple case")
   inspect(got, content="simple case")
-  inspect(bytes2str("+/ Hello, 世界! 🌍"), content="+/ Hello, 世界! 🌍")
+  inspect(
+    bytes2str(b"+/ Hello, 世界! 🌍"),
+    content="+/ Hello, 世界! 🌍",
+  )
 }
 
 ///|
