@@ -14,7 +14,23 @@ pub(all) suberror CorruptInputError {
 
 ///|
 pub impl Show for CorruptInputError with output(self, logger) {
-  logger.write_string("CorruptInputError: \{self}")
+  let CorruptInputError(msg) = self
+  logger.write_string(
+    (
+      $|CorruptInputError("\{msg}")
+    ),
+  )
+}
+
+///|
+test "CorruptInputError shows the message" {
+  let err = CorruptInputError("invalid base64 data at input byte 5")
+  inspect(
+    err,
+    content=(
+      #|CorruptInputError("invalid base64 data at input byte 5")
+    ),
+  )
 }
 
 ///|

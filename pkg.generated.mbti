@@ -30,6 +30,7 @@ pub fn url_encode2str(FixedArray[Byte], no_padding? : Bool) -> String
 pub(all) suberror CorruptInputError {
   CorruptInputError(String)
 }
+pub impl Show for CorruptInputError
 
 // Types and methods
 
