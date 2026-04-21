@@ -87,5 +87,5 @@ test "std_decode2str with no_padding works" {
   let got = @base64.std_decode2str(str, no_padding=true) catch { e => raise e }
   let want =
     #|{"user_handle":"user-1","iss":"gen-user-jwt","sub":"user_cra0au7rack0dckf9dhg","exp":1725185791,"nbf":1725171391,"iat":1725171391}
-  assert_eq(got, want)
+  inspect(got, content=want)
 }
