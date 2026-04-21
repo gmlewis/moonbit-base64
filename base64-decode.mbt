@@ -17,7 +17,7 @@ pub impl Show for CorruptInputError with output(self, logger) {
   let CorruptInputError(msg) = self
   logger.write_string(
     (
-      $|CorruptInputError("\{msg}")
+      $|CorruptInputError(\{msg.escape(quote=true)})
     ),
   )
 }
@@ -29,6 +29,15 @@ test "CorruptInputError shows the message" {
     err,
     content=(
       #|CorruptInputError("invalid base64 data at input byte 5")
+    ),
+  )
+  let err = CorruptInputError(
+    "with \"quotes\" and newlines\n and \\backslashes\\",
+  )
+  inspect(
+    err,
+    content=(
+      #|CorruptInputError("with \"quotes\" and newlines\n and \\backslashes\\")
     ),
   )
 }
