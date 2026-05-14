@@ -45,9 +45,17 @@ pub fn str2array(s : String) -> Array[Byte] {
 ///|
 test "str2array works on simple case" {
   let got = str2array("simple case")
-  inspect(
+  @debug.debug_inspect(
     got,
-    content="[b'\\x73', b'\\x69', b'\\x6D', b'\\x70', b'\\x6C', b'\\x65', b'\\x20', b'\\x63', b'\\x61', b'\\x73', b'\\x65']",
+    content=(
+      #|[0x73, 0x69, 0x6d, 0x70, 0x6c, 0x65, 0x20, 0x63, 0x61, 0x73, 0x65]
+    ),
   )
-  inspect(str2array("🌍"), content="[b'\\xF0', b'\\x9F', b'\\x8C', b'\\x8D']")
+  let got = str2array("🌍")
+  @debug.debug_inspect(
+    got,
+    content=(
+      #|[0xf0, 0x9f, 0x8c, 0x8d]
+    ),
+  )
 }
