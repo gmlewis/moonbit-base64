@@ -13,7 +13,7 @@ pub(all) suberror CorruptInputError {
 }
 
 ///|
-pub impl Show for CorruptInputError with output(self, logger) {
+pub impl Show for CorruptInputError with fn output(self, logger) {
   let CorruptInputError(msg) = self
   logger.write_string(
     (

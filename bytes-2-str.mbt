@@ -7,9 +7,9 @@
 /// ```
 pub fn bytes2str(b : Bytes) -> String {
   let chars = @encoding/utf8.decode_lossy(b)
-  let buf = @buffer.new(size_hint=chars.length())
+  let buf = Buffer(size_hint=chars.length())
   for ch in chars {
-    buf.write_char(ch)
+    buf.write_char_utf16le(ch)
   }
   buf.contents().to_unchecked_string()
 }
@@ -37,9 +37,9 @@ test "bytes2str works on simple case" {
 pub fn array2str(b : ArrayView[Byte]) -> String {
   let bytes = Bytes::from_iter(b.iter())
   let chars = @encoding/utf8.decode_lossy(bytes)
-  let buf = @buffer.new(size_hint=chars.length())
+  let buf = Buffer(size_hint=chars.length())
   for ch in chars {
-    buf.write_char(ch)
+    buf.write_char_utf16le(ch)
   }
   buf.contents().to_unchecked_string()
 }
