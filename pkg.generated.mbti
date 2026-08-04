@@ -37,4 +37,3 @@ pub impl Show for CorruptInputError
 // Type aliases
 
 // Traits
-
