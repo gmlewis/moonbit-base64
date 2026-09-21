@@ -13,12 +13,18 @@ pub(all) suberror CorruptInputError {
 }
 
 ///|
-pub impl Show for CorruptInputError with fn output(self, logger) {
+pub extend CorruptInputError with Show::{to_string}
+
+///|
+#deprecated("Use `Show::output` via the trait or `to_string` instead", skip_current_package=true)
+#doc(hidden)
+pub extend CorruptInputError with Show::{output}
+
+///|
+pub impl Show for CorruptInputError with fn to_string(self) {
   let CorruptInputError(msg) = self
-  logger.write_string(
-    (
-      $|CorruptInputError(\{msg.escape(quote=true)})
-    ),
+  (
+    $|CorruptInputError(\{msg.escape(quote=true)})
   )
 }
 
