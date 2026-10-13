@@ -62,7 +62,7 @@ test "CorruptInputError shows the message" {
 /// ```
 pub fn std_decode2bytes(
   src : String,
-  no_padding? : Bool = false,
+  no_padding~ : Bool = false,
 ) -> Bytes raise CorruptInputError {
   if src.length() == 0 {
     return Bytes::from_array([])
@@ -87,7 +87,7 @@ pub fn std_decode2bytes(
 /// ```
 pub fn std_decode2str(
   src : String,
-  no_padding? : Bool = false,
+  no_padding~ : Bool = false,
 ) -> String raise CorruptInputError {
   bytes2str(std_decode2bytes(src, no_padding~))
 }
@@ -106,7 +106,7 @@ pub fn std_decode2str(
 /// ```
 pub fn url_decode2bytes(
   src : String,
-  no_padding? : Bool = false,
+  no_padding~ : Bool = false,
 ) -> Bytes raise CorruptInputError {
   if src.length() == 0 {
     return Bytes::from_array([])
@@ -131,7 +131,7 @@ pub fn url_decode2bytes(
 /// ```
 pub fn url_decode2str(
   src : String,
-  no_padding? : Bool = false,
+  no_padding~ : Bool = false,
 ) -> String raise CorruptInputError {
   bytes2str(url_decode2bytes(src, no_padding~))
 }
@@ -140,12 +140,12 @@ pub fn url_decode2str(
 fn decode_quantum(
   decode_map : FixedArray[Byte],
   dst : FixedArray[Byte],
-  dst_offset : Int,
+  dst_offset : Int32,
   src : FixedArray[Byte],
-  si : Int,
+  si : Int32,
   decode_pad_char : Byte,
   no_padding : Bool,
-) -> (Int, Int) raise CorruptInputError {
+) -> (Int32, Int32) raise CorruptInputError {
   let dbuf : FixedArray[Byte] = FixedArray::make(4, b'\x00')
   let mut dlen = 4
   let mut si = si
@@ -240,7 +240,7 @@ fn decode_buf(
   dst : FixedArray[Byte],
   src : FixedArray[Byte],
   no_padding : Bool,
-) -> Int raise CorruptInputError {
+) -> Int32 raise CorruptInputError {
   if src.length() == 0 {
     return 0
   }
@@ -280,7 +280,7 @@ fn decode_buf(
 }
 
 ///|
-fn be_put_uint32(b : FixedArray[Byte], offset : Int, value : UInt) -> Unit {
+fn be_put_uint32(b : FixedArray[Byte], offset : Int32, value : UInt32) -> Unit {
   b[offset + 3] = (value & 0xff).to_byte()
   b[offset + 2] = ((value >> 8) & 0xff).to_byte()
   b[offset + 1] = ((value >> 16) & 0xff).to_byte()
@@ -292,7 +292,7 @@ fn be_put_uint32(b : FixedArray[Byte], offset : Int, value : UInt) -> Unit {
 // if it came from an invalid character.
 
 ///|
-fn assemble32(n1 : Byte, n2 : Byte, n3 : Byte, n4 : Byte) -> (UInt, Bool) {
+fn assemble32(n1 : Byte, n2 : Byte, n3 : Byte, n4 : Byte) -> (UInt32, Bool) {
   // Check that all the digits are valid. If any of them was 0xff, their
   // bitwise OR will be 0xff.
   if (n1 | (n2 | (n3 | n4))) == b'\xff' {
@@ -306,7 +306,7 @@ fn assemble32(n1 : Byte, n2 : Byte, n3 : Byte, n4 : Byte) -> (UInt, Bool) {
 }
 
 ///|
-fn decoded_len(n : Int, no_padding : Bool) -> Int {
+fn decoded_len(n : Int32, no_padding : Bool) -> Int32 {
   if no_padding {
     return n / 4 * 3 + n % 4 * 6 / 8
   }
