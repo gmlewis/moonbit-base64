@@ -1,6 +1,6 @@
 name = "gmlewis/base64"
 
-version = "0.16.14"
+version = "0.16.15"
 
 readme = "README.md"
 
