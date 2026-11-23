@@ -101,6 +101,11 @@ refresh_registry() {
 note "Running ./update.sh (required before publishing) ..."
 ./update.sh
 
+# Never release a module that still has compiler warnings.
+note "Checking for compiler warnings (moon check --deny-warn) ..."
+moon check --deny-warn --no-mbti ||
+  die "moon check reported warnings or errors; refusing to cut the release"
+
 # --- Find the last published version ---------------------------------------
 
 published_version=""
@@ -163,10 +168,10 @@ if tag_exists "v$new_version"; then
   die "tag v$new_version already exists; delete it or bump the version manually"
 fi
 
+refresh_registry
+
 note "Bumping $local_version -> $new_version in moon.mod ..."
 set_version "$new_version"
-
-refresh_registry
 
 note "Committing the release ..."
 git commit -sam "Bump version to $new_version"
